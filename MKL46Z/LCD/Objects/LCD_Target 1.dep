@@ -1,0 +1,41 @@
+Dependencies for Project 'LCD', Target 'Target 1': (DO NOT MODIFY !)
+CompilerVersion: 5060750::V5.06 update 6 (build 750)::.\ARMCC
+F (.\main.cpp)(0x5EE480C9)(--cpp -c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections -I ..\LCD-I.\RTE\Device\MKL46Z128xxx4-I.\RTE\_Target_1-IC:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\phuon\AppData\Local\Arm\Packs\NXP\MKL46Z4_DFP\10.0.3\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -D_RTE_-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E535E6C)
+I (LCD.c)(0x5EE46DF8)
+I (.\RTE\Device\MKL46Z128xxx4\MKL46Z4.h)(0x5AC253FC)
+I (C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm0plus.h)(0x5E8EDF32)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E535E6C)
+I (C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8EDF32)
+I (C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8314D2)
+I (C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8EDF32)
+I (.\RTE\Device\MKL46Z128xxx4\system_MKL46Z4.h)(0x5AC253FC)
+I (LCD.h)(0x5EE46C46)
+I (main.h)(0x5EE46DD6)
+I (Delay.h)(0x5EE46FAE)
+F (.\LCD.c)(0x5EE46DF8)(-c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\Device\MKL46Z128xxx4-I.\RTE\_Target_1-IC:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\phuon\AppData\Local\Arm\Packs\NXP\MKL46Z4_DFP\10.0.3\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -D_RTE_-o .\objects\lcd.o --omf_browse .\objects\lcd.crf --depend .\objects\lcd.d)
+I (.\RTE\Device\MKL46Z128xxx4\MKL46Z4.h)(0x5AC253FC)
+I (C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm0plus.h)(0x5E8EDF32)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E535E6C)
+I (C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8EDF32)
+I (C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8314D2)
+I (C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8EDF32)
+I (.\RTE\Device\MKL46Z128xxx4\system_MKL46Z4.h)(0x5AC253FC)
+I (LCD.h)(0x5EE46C46)
+F (.\LCD.h)(0x5EE46C46)()
+F (.\Delay.h)(0x5EE46FAE)()
+F (RTE\Device\MKL46Z128xxx4\MKL46Z128xxx4_flash.scf)(0x5AC253FC)()
+F (RTE\Device\MKL46Z128xxx4\MKL46Z128xxx4_ram.scf)(0x5AC253FC)()
+F (RTE\Device\MKL46Z128xxx4\MKL46Z4.h)(0x5AC253FC)()
+F (RTE\Device\MKL46Z128xxx4\MKL46Z4_features.h)(0x5AC253FC)()
+F (RTE\Device\MKL46Z128xxx4\fsl_device_registers.h)(0x5AC253FC)()
+F (RTE\Device\MKL46Z128xxx4\startup_MKL46Z4.s)(0x5EE47399)(--cpu Cortex-M0+ --pd "__EVAL SETA 1" -g --apcs=interwork -I.\RTE\Device\MKL46Z128xxx4-I.\RTE\_Target_1-IC:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\phuon\AppData\Local\Arm\Packs\NXP\MKL46Z4_DFP\10.0.3\Device\Include--pd "__UVISION_VERSION SETA 530" --pd "_RTE_ SETA 1" --pd "_RTE_ SETA 1"--list .\listings\startup_mkl46z4.lst --xref -o .\objects\startup_mkl46z4.o --depend .\objects\startup_mkl46z4.d)
+F (RTE\Device\MKL46Z128xxx4\system_MKL46Z4.c)(0x51BFCCC8)(-c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\Device\MKL46Z128xxx4-I.\RTE\_Target_1-IC:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\phuon\AppData\Local\Arm\Packs\NXP\MKL46Z4_DFP\10.0.3\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -D_RTE_-o .\objects\system_mkl46z4.o --omf_browse .\objects\system_mkl46z4.crf --depend .\objects\system_mkl46z4.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E535E6C)
+I (RTE\Device\MKL46Z128xxx4\MKL46Z4.h)(0x5AC253FC)
+I (C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm0plus.h)(0x5E8EDF32)
+I (C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8EDF32)
+I (C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8314D2)
+I (C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5E8EDF32)
+I (RTE\Device\MKL46Z128xxx4\system_MKL46Z4.h)(0x5AC253FC)
+F (RTE\Device\MKL46Z128xxx4\system_MKL46Z4.h)(0x5AC253FC)()

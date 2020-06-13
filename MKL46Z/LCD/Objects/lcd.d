@@ -1,0 +1,9 @@
+.\objects\lcd.o: LCD.c
+.\objects\lcd.o: .\RTE\Device\MKL46Z128xxx4\MKL46Z4.h
+.\objects\lcd.o: C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm0plus.h
+.\objects\lcd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\lcd.o: C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\lcd.o: C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\lcd.o: C:\Users\phuon\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\lcd.o: .\RTE\Device\MKL46Z128xxx4\system_MKL46Z4.h
+.\objects\lcd.o: LCD.h
