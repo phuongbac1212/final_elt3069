@@ -16,7 +16,7 @@
         <ShowSource>1</ShowSource>
     </Trace1>
     <DebugChecksum>
-        <Checksum>62864686</Checksum>
+        <Checksum>521054631</Checksum>
     </DebugChecksum>
     <Disassembly>
         <InstrCount>0</InstrCount>
@@ -146,6 +146,7 @@
         <regBase3>GPIOA_PDIR 2</regBase3>
         <regBase4>FGPIOA_PDIR 2</regBase4>
         <regBase5>FGPIOC_PDIR 2</regBase5>
+        <regBase6>PORTC_ISFR 2</regBase6>
     </Registers>
     <DisassembleMode>
         <mode>0</mode>
@@ -153,6 +154,10 @@
     <Breakpoints2>
         <Count>0</Count>
     </Breakpoints2>
+    <TermIOLog>
+        <LoggingEnabled>_ 1</LoggingEnabled>
+        <LogFile>_ "$PROJ_DIR$\TermIO.log"</LogFile>
+    </TermIOLog>
     <LogFile>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -169,8 +174,4 @@
     <CallStackStripe>
         <ShowTiming>1</ShowTiming>
     </CallStackStripe>
-    <TermIOLog>
-        <LoggingEnabled>_ 1</LoggingEnabled>
-        <LogFile>_ "$PROJ_DIR$\TermIO.log"</LogFile>
-    </TermIOLog>
 </settings>

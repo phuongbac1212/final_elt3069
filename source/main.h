@@ -6,20 +6,25 @@
 ***********************************/
 #define LED1            (1 << 29)
 #define LED2            (1 << 5)
-#define SW1             (1 << 3)
-#define SW2             (1 << 12)
-#define SW3             (1 << 17)
+
 #define SW1_PIN         (3)
 #define SW2_PIN         (12)
-#define SW3_PIN         (17)
+#define SW3_PIN         (13)
+#define SW1             (1 << SW1_PIN)
+#define SW2             (1 << SW2_PIN)
+#define SW3             (1 << SW3_PIN)
+#define ISW1            (SW1)
+#define ISW2            (SW2)
+#define ISW3            (SW3)
+
 #define EITHER_EDGE     (11)  
-#define FALLING_EDGE    (12)
+#define FALLING_EDGE    (10)
 #define SW1_PRIORITY    (255)
 #define ON              (1)
 #define OFF             (0)
-#define ISW1            (0x8)
-#define ISW2            (0x1000)
 #define DELTA_TIME      (200) 
+
+#define BOUND_TIME      (250)
 
 /*
 k | mean

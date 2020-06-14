@@ -7,7 +7,7 @@
 #include "MKL46Z4.h"
 #include "system_MKL46Z4.h"
 
-#define OPEN_SW3 0
+#define OPEN_SW3 1
 /***********************************
 *       GLOBAL VARIABLES
 ***********************************/
@@ -25,7 +25,7 @@ extern void SegLCD_DisplayHex(unsigned short);
 
 void initLed();
 void initSW();
-void PORTA_Interrupt_init();
+void Edit_timer_mode();
 void PORTC_PORTD_Interrupt_init();
 void PIT_init(uint32_t);
 void Delay(uint32_t);
@@ -34,12 +34,11 @@ void init_SysTick_interrupt();
 /***********************************
 *       MAIN FUNCTION
 ***********************************/
-int main(){
+ int main(){
   SegLCD_Init();
   initLed();
   initSW();
   init_SysTick_interrupt();
-  //PORTA_Interrupt_init();
   PORTC_PORTD_Interrupt_init();
   PIT_init(rela_pit_time*SystemCoreClock);
 
@@ -127,14 +126,14 @@ void initSW() {
   //IRQC (set interrupt DMA/request )
   PORTC->PCR[3] |= PORT_PCR_IRQC(EITHER_EDGE);
   
-#ifdef OPEN_SW3
-  //enable clock for port A
-  SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;
-  PORTA->PCR[SW3_PIN] |= PORT_PCR_MUX(1);
-  PORTA->PCR[SW3_PIN] |= PORT_PCR_PE_MASK;
-  PORTA->PCR[SW3_PIN] |= PORT_PCR_PS_MASK;
-  PORTA->PCR[SW3_PIN] |= PORT_PCR_IRQC(FALLING_EDGE);
-#endif
+  PORTC->PCR[SW3_PIN] &= ~(PORT_PCR_MUX_MASK);
+  PORTC->PCR[SW3_PIN] |= PORT_PCR_MUX(1);
+  PORTC->PCR[SW3_PIN] |= PORT_PCR_PE_MASK;
+  PORTC->PCR[SW3_PIN] |= PORT_PCR_PS_MASK;
+  //GPIO input
+  GPIOC->PDDR &= ~(SW3);
+  //IRQC (set interrupt DMA/request )
+  PORTC->PCR[SW3_PIN] |= PORT_PCR_IRQC(FALLING_EDGE);
 }
 
 
@@ -143,59 +142,31 @@ void initSW() {
 * Interrupt configuration for 2 switches
 **********************************/
 void PORTC_PORTD_Interrupt_init(){
+  
   NVIC_EnableIRQ(PORTC_PORTD_IRQn);
   NVIC_ClearPendingIRQ(PORTC_PORTD_IRQn);
   NVIC_SetPriority(PORTC_PORTD_IRQn, SW1_PRIORITY);
 }
 
 void PORTC_PORTD_IRQHandler(){
+  if (PORTC->ISFR ==ISW3) {
+    PORTC->ISFR |= SW3;
+    Edit_timer_mode();
+  }
   if(PORTC->ISFR ==ISW1){
-         PORTC->ISFR |=SW1; // clear interrupt flag
          MODE_XOR_SEAT(mode);
          if (!IS_SEATED(mode)) mode =0;
 	} 
   
-  if(PORTC->ISFR==ISW2) {
-         PORTC->ISFR |=SW2; // clear interrupt flag
+  if(PORTC->ISFR==ISW2 && IS_SEATED(mode)) {
          MODE_XOR_BELT(mode);
          MODE_TIMER_OFF(mode);
          MODE_BUZZER_OFF(mode);
          if (!IS_BELTED(mode)) mode = (1 << MODE_SEAT);
   } 
-}
-
-
-void PORTA_Interrupt_init() {
-  NVIC_EnableIRQ(PORTA_IRQn);
-  NVIC_ClearPendingIRQ(PORTA_IRQn);
-  NVIC_SetPriority(PORTA_IRQn, SW1_PRIORITY);
-}
-
-void PORTA_IRQHandler() {
-  NVIC_DisableIRQ(PORTC_PORTD_IRQn);
-  int temp = (FPTA->PDIR >> SW3_PIN) & 1;
-  while (!temp) {
-    if (msTicks - lastOperation >0) {
-      SegLCD_DisplayDecimal(rela_pit_time);
-      // if sw1 is pushed then increase time
-      temp = (FPTC->PDIR >> SW1_PIN) & 1;
-      if (!temp) {
-        rela_pit_time++;
-      }
-      // if sw2 is pushed then reduce time
-      temp = (FPTC->PDIR >> SW2_PIN) & 1;
-      if (!temp) {
-        rela_pit_time--;
-        if (rela_pit_time <=0)
-          rela_pit_time = 1;
-      }
-      
-      temp = (FPTA->PDIR >> SW3_PIN) & 1;
-    }
-  }
-  
-  PIT_init(rela_pit_time*SystemCoreClock);
-  NVIC_EnableIRQ(PORTC_PORTD_IRQn);
+  PORTC->ISFR |= SW1;
+  PORTC->ISFR |= SW2;
+  PORTC->ISFR |= SW3;
 }
 
 /***********************************
@@ -250,4 +221,41 @@ void Delay (uint32_t TICK) {
   while (msTicks < TICK); 
   msTicks = 0; 
   // Reset counter 
+}
+
+
+
+/***********************************
+*       Timer edit mode
+***********************************/
+
+void Edit_timer_mode() {
+  NVIC_DisableIRQ(PORTC_PORTD_IRQn);
+  int temp = (FPTC->PDIR >> SW3_PIN) & 1;
+  while (!temp) {
+    if (msTicks - lastOperation > BOUND_TIME) {
+      SegLCD_DisplayDecimal(rela_pit_time);
+      // if sw1 is pushed then increase time
+      temp = (FPTC->PDIR >> SW1_PIN) & 1;
+      if (!temp) {
+        rela_pit_time++;
+      }
+      // if sw2 is pushed then reduce time
+      temp = (FPTC->PDIR >> SW2_PIN) & 1;
+      if (!temp) {
+        rela_pit_time--;
+        if (rela_pit_time <=0)
+          rela_pit_time = 1;
+      }
+      
+      temp = (FPTC->PDIR >> SW3_PIN) & 1;
+      lastOperation = msTicks;
+    }
+  }
+  
+  PIT_init((rela_pit_time-2)*SystemCoreClock);
+  NVIC_EnableIRQ(PORTC_PORTD_IRQn);
+  PORTC->ISFR |= SW1;
+  PORTC->ISFR |= SW2;
+  PORTC->ISFR |= SW3;
 }
