@@ -16,7 +16,7 @@
         <ShowSource>1</ShowSource>
     </Trace1>
     <DebugChecksum>
-        <Checksum>121953011</Checksum>
+        <Checksum>62864686</Checksum>
     </DebugChecksum>
     <Disassembly>
         <InstrCount>0</InstrCount>
@@ -136,14 +136,17 @@
         <DEFAULT_MACRO_PATH>_ "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\bin\pemicro\P&amp;E"</DEFAULT_MACRO_PATH>
         <DEFAULT_LOGFILE_PATH>_ "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\bin\pemicro\P&amp;E"</DEFAULT_LOGFILE_PATH>
     </PE_SETTINGS>
+    <watch_formats>
+        <Fmt0>{W}1:mode	1	0</Fmt0>
+    </watch_formats>
     <Registers>
         <regBase0>GPIOC_PDDR 2</regBase0>
         <regBase1>GPIOC_PDIR 2</regBase1>
         <regBase2>GPIOE_PDOR 2</regBase2>
+        <regBase3>GPIOA_PDIR 2</regBase3>
+        <regBase4>FGPIOA_PDIR 2</regBase4>
+        <regBase5>FGPIOC_PDIR 2</regBase5>
     </Registers>
-    <watch_formats>
-        <Fmt0>{W}1:mode	1	0</Fmt0>
-    </watch_formats>
     <DisassembleMode>
         <mode>0</mode>
     </DisassembleMode>

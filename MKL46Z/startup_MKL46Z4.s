@@ -212,7 +212,7 @@ DMA3_IRQHandler
         PUBWEAK LLWU_IRQHandler
         PUBWEAK I2C0_IRQHandler
         PUBWEAK I2C0_DriverIRQHandler
-        SECTION .text:CODE:REORDER:NOROOT(2ke
+        SECTION .text:CODE:REORDER:NOROOT
         
         
 I2C0_IRQHandler

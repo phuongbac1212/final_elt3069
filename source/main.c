@@ -2,42 +2,51 @@
 *       LIBRARIES DECLARATION
 ***********************************/
 #include  <stdio.h>
-//#include "LCD.c"
+#include "Seg_LCD.h"
 #include "main.h"
 #include "MKL46Z4.h"
-#include "Delay.h"
+#include "system_MKL46Z4.h"
 
+#define OPEN_SW3 0
 /***********************************
 *       GLOBAL VARIABLES
 ***********************************/
 uint8_t mode                    = 0;
 uint64_t volatile timeNow       = 0;
 uint64_t lastOperation          = 0;
-
+uint64_t volatile msTicks       = 0; 
+uint64_t rela_pit_time          = 5;        
 
 /***********************************
-*			FUNCTIONS' PROTOTYPE
+*       FUNCTIONS' PROTOTYPE
 ***********************************/
 extern void SegLCD_Init(void);
 extern void SegLCD_DisplayHex(unsigned short);
 
 void initLed();
 void initSW();
+void PORTA_Interrupt_init();
 void PORTC_PORTD_Interrupt_init();
 void PIT_init(uint32_t);
+void Delay(uint32_t);
+void init_SysTick_interrupt();
 
+/***********************************
+*       MAIN FUNCTION
+***********************************/
 int main(){
-	//SegLCD_Init();
+  SegLCD_Init();
   initLed();
   initSW();
   init_SysTick_interrupt();
+  //PORTA_Interrupt_init();
   PORTC_PORTD_Interrupt_init();
-  //SegLCD_DisplayHex(15);
-  Delay(500);
-  PIT_init(5*20971520/2);
+  PIT_init(rela_pit_time*SystemCoreClock);
 
   while(1) {   
-    if(msTicks - lastOperation > DELTA_TIME) {
+    if(msTicks - lastOperation > 500){//DELTA_TIME) {
+      SegLCD_DisplayDecimal((mode &(~1))*10 \
+        + IS_TIMER_ENABLED(mode));
       if (!mode) { // idle
         //printf("I\n");
         FPTE->PDOR |= LED1;
@@ -117,6 +126,15 @@ void initSW() {
   GPIOC->PDDR &= ~(SW1);
   //IRQC (set interrupt DMA/request )
   PORTC->PCR[3] |= PORT_PCR_IRQC(EITHER_EDGE);
+  
+#ifdef OPEN_SW3
+  //enable clock for port A
+  SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;
+  PORTA->PCR[SW3_PIN] |= PORT_PCR_MUX(1);
+  PORTA->PCR[SW3_PIN] |= PORT_PCR_PE_MASK;
+  PORTA->PCR[SW3_PIN] |= PORT_PCR_PS_MASK;
+  PORTA->PCR[SW3_PIN] |= PORT_PCR_IRQC(FALLING_EDGE);
+#endif
 }
 
 
@@ -129,6 +147,7 @@ void PORTC_PORTD_Interrupt_init(){
   NVIC_ClearPendingIRQ(PORTC_PORTD_IRQn);
   NVIC_SetPriority(PORTC_PORTD_IRQn, SW1_PRIORITY);
 }
+
 void PORTC_PORTD_IRQHandler(){
   if(PORTC->ISFR ==ISW1){
          PORTC->ISFR |=SW1; // clear interrupt flag
@@ -141,11 +160,43 @@ void PORTC_PORTD_IRQHandler(){
          MODE_XOR_BELT(mode);
          MODE_TIMER_OFF(mode);
          MODE_BUZZER_OFF(mode);
+         if (!IS_BELTED(mode)) mode = (1 << MODE_SEAT);
   } 
 }
 
 
+void PORTA_Interrupt_init() {
+  NVIC_EnableIRQ(PORTA_IRQn);
+  NVIC_ClearPendingIRQ(PORTA_IRQn);
+  NVIC_SetPriority(PORTA_IRQn, SW1_PRIORITY);
+}
 
+void PORTA_IRQHandler() {
+  NVIC_DisableIRQ(PORTC_PORTD_IRQn);
+  int temp = (FPTA->PDIR >> SW3_PIN) & 1;
+  while (!temp) {
+    if (msTicks - lastOperation >0) {
+      SegLCD_DisplayDecimal(rela_pit_time);
+      // if sw1 is pushed then increase time
+      temp = (FPTC->PDIR >> SW1_PIN) & 1;
+      if (!temp) {
+        rela_pit_time++;
+      }
+      // if sw2 is pushed then reduce time
+      temp = (FPTC->PDIR >> SW2_PIN) & 1;
+      if (!temp) {
+        rela_pit_time--;
+        if (rela_pit_time <=0)
+          rela_pit_time = 1;
+      }
+      
+      temp = (FPTA->PDIR >> SW3_PIN) & 1;
+    }
+  }
+  
+  PIT_init(rela_pit_time*SystemCoreClock);
+  NVIC_EnableIRQ(PORTC_PORTD_IRQn);
+}
 
 /***********************************
 *       PIT INIT & INTERRUPT SETUP
@@ -170,3 +221,33 @@ void PIT_IRQHandler(){
 }
 
 
+/***********************************
+*       Systick configuration
+***********************************/
+
+void init_SysTick_interrupt()
+{
+  SysTick->LOAD = SystemCoreClock / 1000;
+  //configured the SysTick to count in 1ms
+  // Select Core Clock & Enable SysTick & Enable Interrupt 
+  SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk |SysTick_CTRL_TICKINT_Msk |SysTick_CTRL_ENABLE_Msk;
+}
+
+/*
+*        SysTick interrupt Handler
+*/
+void SysTick_Handler (void) 
+{
+  msTicks++; // Increment counter 
+  // uint64_t is enough for 584942 Millennium
+}
+
+/*
+*       DELAY FUNCTION
+*       @PARA TICK is time delay in ms.
+*/
+void Delay (uint32_t TICK) {
+  while (msTicks < TICK); 
+  msTicks = 0; 
+  // Reset counter 
+}

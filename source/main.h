@@ -8,9 +8,12 @@
 #define LED2            (1 << 5)
 #define SW1             (1 << 3)
 #define SW2             (1 << 12)
-#define SW1_PIN         (5)
+#define SW3             (1 << 17)
+#define SW1_PIN         (3)
 #define SW2_PIN         (12)
-#define EITHER_EDGE     (11)    
+#define SW3_PIN         (17)
+#define EITHER_EDGE     (11)  
+#define FALLING_EDGE    (12)
 #define SW1_PRIORITY    (255)
 #define ON              (1)
 #define OFF             (0)
@@ -18,10 +21,6 @@
 #define ISW2            (0x1000)
 #define DELTA_TIME      (200) 
 
-#define IDLE            (0)
-#define SEATED          (1)
-#define BELTED          (2) 
-#define BUZZER          (3)
 /*
 k | mean
 --------
@@ -47,8 +46,8 @@ k | mean
 #define IS_BUZZING(m)           ((m >> MODE_BUZZ) & 1)
 
 #define MODE_TIMER_ON(m)        { \
-                                  m |= ON; \
                                   PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK; \
+                                  m |= ON; \
                                 }
 #define MODE_TIMER_OFF(m)       { \
                                   m &= ~ON;\

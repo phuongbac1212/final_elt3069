@@ -1,12 +1,12 @@
-"C:\Users\phuon\OneDrive\Documents\blink\source\main1.c"
+"C:\Users\phuon\OneDrive\Documents\blink\source\main.c"
 -std=c11
 -ferror-limit=0
 -fbracket-depth=512
 -MD
 -MF
-C:\Users\phuon\OneDrive\Documents\blink\proj\Debug\Obj\main1.pbi.dep
+C:\Users\phuon\OneDrive\Documents\blink\proj\Debug\Obj\main.pbi.dep
 -o
-main1.pbi
+main.pbi
 -I
 C:\Users\phuon\OneDrive\Documents\blink\source
 -I
